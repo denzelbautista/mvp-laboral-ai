@@ -1,0 +1,202 @@
+<!-- index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<head>
+  <!-- css propios -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+
+<div class="main-banner">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 align-self-center">
+        <div class="caption header-text">
+          <h1 style="color: white;">Bienvenidos a Oceano Fresco</h1>
+          <h2>LA PRIMERA TIENDA VIRTUAL DE PESCADOS FRESCOS!</h2>
+          <p>¡Descubre lo mejor del mar con Oceano Fresco! Apoya a los pescadores artesanales y disfruta de
+            productos
+            Frescos y sostenibles directamente del océano. ¡Bienvenido a bordo!</p>
+          <div class="search-input">
+            <form id="search" action="/shop">
+              <input type="text" placeholder="¿Deseas comprar?" id='searchText' name="searchKeyword" onkeypress="handle"
+                readonly />
+              <button role="button">Tienda AQUÍ</button>
+            </form>
+          </div>
+          <div class="search-input">
+            <form id="search" action="/registroproducto">
+              <input type="text" placeholder="¿Eres pescador?" id='searchText' name="searchKeyword" onkeypress="handle"
+                readonly />
+              <button role="button">Publica AQUÍ</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 offset-lg-2">
+        <div class="right-image">
+          <img src="{{ url_for('static', filename='assets/images/banner-image.png') }}" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-6">
+        <a href="#">
+          <div class="item">
+            <div class="image">
+              <img src="{{ url_for('static', filename='assets/images/fish.png') }}" alt="" style="max-width: 44px;">
+            </div>
+            <h4>Peces de calidad</h4>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <a href="#">
+          <div class="item">
+            <div class="image">
+              <img src="{{ url_for('static', filename='assets/images/fishing-rod.png') }}" alt=""
+                style="max-width: 44px;">
+            </div>
+            <h4>Pesca sostenible</h4>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <a href="#">
+          <div class="item">
+            <div class="image">
+              <img src="{{ url_for('static', filename='assets/images/sailboat.png') }}" alt="" style="max-width: 44px;">
+            </div>
+            <h4>Embarcaciones aptas</h4>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <a href="#">
+          <div class="item">
+            <div class="image">
+              <img src="{{ url_for('static', filename='assets/images/users.png') }}" alt="" style="max-width: 44px;">
+            </div>
+            <h4>Conectando con la comunidad</h4>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Inicio de los videos -->
+<div class="video-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="video-container">
+          <iframe width="340" height="630" src="https://www.youtube.com/embed/m65GzBKsHiA?si=pG0WE3TZPhrOxprl"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <p class="video-description">Este video te muestra cómo utilizar nuestra página como comprador.</p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="video-container">
+          <iframe width="340" height="630" src="https://www.youtube.com/embed/ePJ29ycSw8o?si=aDIEmwvfMqYEjZDV"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <p class="video-description">Este video te enseña cómo manejar nuestra página eficientemente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin de los videos -->
+
+
+<div class="section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="shop">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="section-heading">
+                <h6>Nuestra tienda</h6>
+                <h2>¡Haga su pedido anticipado, compre y obtenga los mejores <em>precios</em> para
+                  usted!</h2>
+              </div>
+              <p>Pescadores artesanales confiables más cerca de ti</p>
+              <div class="main-button">
+                <a href="/shop">Explorar la tienda</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 offset-lg-2 align-self-end">
+        <div class="subscribe">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="section-heading">
+                <h6>Boletín informativo</h6>
+                <h2>Accede a mucha más información acerca de los peces de la costa peruana
+                  <em>Subscribete </em>al
+                  Boletin informativo!
+                </h2>
+              </div>
+              <div class="search-input">
+                <form id="subscribe" action="/agregar_correo" method="post">
+                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    placeholder="Tu correo..." name="correo">
+                  <button type="submit" value="Agregar Correo">Subscrirse ahora</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('subscribe').onsubmit = function (event) {
+    event.preventDefault(); // Previene el comportamiento por defecto del formulario
+
+    // Verifica que el correo tenga "@" y ".com"
+    var correo = document.getElementById('exampleInputEmail1').value;
+    if (correo.includes('@') && correo.includes('.com')) {
+      // Crea un objeto FormData con los datos del formulario
+      var formData = new FormData(event.target);
+
+      // Realiza la petición POST al servidor
+      fetch('/agregar_correo', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.mensaje); // Muestra un alerta con el mensaje del servidor
+          window.location.href = '/'; // Redirecciona a la página de inicio
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    } else {
+      alert('Por favor, introduce un correo electrónico válido.');
+    }
+  };
+
+
+</script>
+
+
+
+{% endblock %}

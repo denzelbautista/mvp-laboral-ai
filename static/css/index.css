@@ -1,0 +1,25 @@
+.search-input {
+    margin-bottom: 10px;
+}
+
+.video-section {
+    margin: 50px 0;
+}
+
+.video-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.video-container iframe {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-description {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
