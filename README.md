@@ -11,7 +11,7 @@ $ source .venv/bin/activate
 ```
 3) Tercer paso, instalar las dependencias
 ```shell
-$ pip install -r req.txt
+$ pip install -r requirements.txt
 ```
 
 4) Cuarto paso, correr el servidor
