@@ -43,16 +43,13 @@ def editarproducto():
     return render_template('editarproducto.html', product_id=product_id)
 
 @views_bp.route('/registroproducto')
-@login_required
 def registroproducto():
     return render_template('registroproducto.html')
 
 @views_bp.route('/misproductos')
-@login_required
 def misproductos():
     return render_template('misproductos.html')
 
 @views_bp.route('/profile')
-@login_required
 def profile():
     return render_template('profile.html')
