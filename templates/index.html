@@ -14,157 +14,83 @@
     <div class="row">
       <div class="col-lg-6 align-self-center">
         <div class="caption header-text">
-          <h1 style="color: white;">Bienvenidos a Oceano Fresco</h1>
-          <h2>LA PRIMERA TIENDA VIRTUAL DE PESCADOS FRESCOS!</h2>
-          <p>¡Descubre lo mejor del mar con Oceano Fresco! Apoya a los pescadores artesanales y disfruta de
-            productos
-            Frescos y sostenibles directamente del océano. ¡Bienvenido a bordo!</p>
-          <div class="search-input">
-            <form id="search" action="/shop">
-              <input type="text" placeholder="¿Deseas comprar?" id='searchText' name="searchKeyword" onkeypress="handle"
-                readonly />
-              <button role="button">Tienda AQUÍ</button>
-            </form>
-          </div>
-          <div class="search-input">
-            <form id="search" action="/registroproducto">
-              <input type="text" placeholder="¿Eres pescador?" id='searchText' name="searchKeyword" onkeypress="handle"
-                readonly />
-              <button role="button">Publica AQUÍ</button>
-            </form>
-          </div>
+          <h2>CONECTA CON TALENTO JOVEN</h2>
+          <p>Mas de 10,000 talentos jovenes con las competencias que tu necesitas.
+            Responde solo 3 preguntas y nestra IA hara el resto.</p>
         </div>
       </div>
       <div class="col-lg-4 offset-lg-2">
         <div class="right-image">
-          <img src="{{ url_for('static', filename='assets/images/banner-image.png') }}" alt="">
+          <img src="{{ url_for('static', filename='assets/images/inicio1.png') }}" alt="">
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="features">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-3 col-md-6">
-        <a href="#">
-          <div class="item">
-            <div class="image">
-              <img src="{{ url_for('static', filename='assets/images/fish.png') }}" alt="" style="max-width: 44px;">
-            </div>
-            <h4>Peces de calidad</h4>
-          </div>
+<div class="div-respaldado">
+  <h3>Respaldado por:</h3>
+    <div class="logos">
+        <a target="_blank" href="https://www.cofide.com.pe">
+            <img loading="lazy" src="../static/assets/images/cofide-logo.png" alt="logo-cofide" style="opacity: 1;">
         </a>
-      </div>
-      <div class="col-lg-3 col-md-6">
-        <a href="#">
-          <div class="item">
-            <div class="image">
-              <img src="{{ url_for('static', filename='assets/images/fishing-rod.png') }}" alt=""
-                style="max-width: 44px;">
-            </div>
-            <h4>Pesca sostenible</h4>
-          </div>
+        <a target="_blank" href="https://utecventures.com/">
+            <img loading="lazy" src="../static/assets/images/utec-logo.png" alt="logo-utec" style="opacity: 1;">
         </a>
-      </div>
-      <div class="col-lg-3 col-md-6">
-        <a href="#">
-          <div class="item">
-            <div class="image">
-              <img src="{{ url_for('static', filename='assets/images/sailboat.png') }}" alt="" style="max-width: 44px;">
-            </div>
-            <h4>Embarcaciones aptas</h4>
-          </div>
+        <a target="_blank" href="https://www2.proinnovate.gob.pe/">
+            <img loading="lazy" src="../static/assets/images/innovate-logo.png" alt="logo-innovate" style="opacity: 1;">
         </a>
-      </div>
-      <div class="col-lg-3 col-md-6">
-        <a href="#">
-          <div class="item">
-            <div class="image">
-              <img src="{{ url_for('static', filename='assets/images/users.png') }}" alt="" style="max-width: 44px;">
-            </div>
-            <h4>Conectando con la comunidad</h4>
-          </div>
+        <a target="_blank" href="https://startupleague-kpsl.com/">
+            <img loading="lazy" src="../static/assets/images/koica-logo.png" alt="logo-koica" style="opacity: 1;">
         </a>
-      </div>
+        <a target="_blank" href="https://www.shift.pe">
+            <img loading="lazy" src="../static/assets/images/shift-logo.png" alt="logo-shift" style="opacity: 1;">
+        </a>
+        <a target="_blank" href="https://kunan.org/">
+          <img loading="lazy" src="../static/assets/images/kunan_logo.png" alt="logo-shift" style="opacity: 1;">
+        </a>
+        <a target="_blank" href="https://www.facebook.com/incubaunt.peru/?locale=es_LA">
+          <img loading="lazy" src="../static/assets/images/incubaunt_logo.png" alt="logo-shift" style="opacity: 1;">
+        </a>
     </div>
-  </div>
 </div>
 
-<!-- Inicio de los videos -->
-<div class="video-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="video-container">
-          <iframe width="340" height="630" src="https://www.youtube.com/embed/m65GzBKsHiA?si=pG0WE3TZPhrOxprl"
-            title="YouTube video player" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <p class="video-description">Este video te muestra cómo utilizar nuestra página como comprador.</p>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="video-container">
-          <iframe width="340" height="630" src="https://www.youtube.com/embed/ePJ29ycSw8o?si=aDIEmwvfMqYEjZDV"
-            title="YouTube video player" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <p class="video-description">Este video te enseña cómo manejar nuestra página eficientemente.</p>
-        </div>
-      </div>
-    </div>
+<section class="section-4">
+  <div class="img-feedback">
+    <img src="../static/assets/images/img-feedback.png">
   </div>
-</div>
-<!-- Fin de los videos -->
+  <div class="div-feedback">
+    <img src="../static/assets/images/icon-feedback.png">
+    <h1>Ahorra Tiempo</h1>
+    <br>
+      <span>
+        ✓ Encuentra un único sitio para encontrar tus candidatos ideales
+      </span>
+      <br>
+      <span>
+        ✓ Podrás encontrar cientos de candidatos facilmente
+      </span>
+  </div>
+</section>
 
 
-<div class="section cta">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-5">
-        <div class="shop">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="section-heading">
-                <h6>Nuestra tienda</h6>
-                <h2>¡Haga su pedido anticipado, compre y obtenga los mejores <em>precios</em> para
-                  usted!</h2>
-              </div>
-              <p>Pescadores artesanales confiables más cerca de ti</p>
-              <div class="main-button">
-                <a href="/shop">Explorar la tienda</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-5 offset-lg-2 align-self-end">
-        <div class="subscribe">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="section-heading">
-                <h6>Boletín informativo</h6>
-                <h2>Accede a mucha más información acerca de los peces de la costa peruana
-                  <em>Subscribete </em>al
-                  Boletin informativo!
-                </h2>
-              </div>
-              <div class="search-input">
-                <form id="subscribe" action="/agregar_correo" method="post">
-                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Tu correo..." name="correo">
-                  <button type="submit" value="Agregar Correo">Subscrirse ahora</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<section class="section-5">
+  <div class="div-recomendaciones">
+    <img src="../static/assets/images/icon-recomendaciones.png">
+    <h1>Contacto</h1>
+    <br>
+      <span>
+        ✓ Facilidad en contactar con los candidatos de una manera mas eficiente.
+      </span>
+      <br>
+      <span>
+        ✓ Cientos de candidatos pueden contactarse facilmente
+      </span>
   </div>
-</div>
+  <div class="img-recomendaciones">
+    <img src="../static/assets/images/img-recomendaciones.png">
+  </div>
+</section>
 
 <script>
   document.getElementById('subscribe').onsubmit = function (event) {

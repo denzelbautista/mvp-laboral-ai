@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <!-- titulo e icono-->
-    <title>Oceano Fresco</title>
+    <title>Laboral AI</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/iconochallwa.ico') }}">
     <!-- titulo e icono-->
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -40,8 +40,7 @@
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
                         <a href="/" class="logo">
-                            <img src="{{ url_for('static', filename='assets/images/oceanoLogo.png') }}" alt=""
-                                style="width: 220px;">
+                            <h4 style="color: aliceblue;">Laboral.AI</h4>
                             <!-- Colocar el logo de challwacom -->
                         </a>
                         <!-- ***** Logo End ***** -->
@@ -56,8 +55,8 @@
                             <li><a href="#" id="logout-button">Cerrar sesión</a></li>
                             <!-- Agrega un ID al botón de cerrar sesión -->
                             {% else %}
-                            <li><a href="{{ url_for('views.shop') }}">Tienda</a></li>
-                            <li><a href="{{ url_for('views.carrito') }}">Carrito</a></li>
+                            <li><a href="{{ url_for('views.shop') }}">Ofertas Laborales</a></li>
+                            <li><a href="{{ url_for('views.carrito') }}">Empresas Aliadas</a></li>
                             <li><a href="{{ url_for('views.register') }}">Regístrate</a></li>
                             <li><a href="{{ url_for('views.login') }}">Inicia sesión</a></li>
                             {% endif %}
@@ -81,10 +80,16 @@
     <footer>
         <div class="container">
             <div class="col-lg-12">
-                <p>Copyright © 2024 OceanoFresco. &nbsp;&nbsp;</p>
+                <p>Copyright © 2024 Laboral.AI &nbsp;&nbsp;</p>
             </div>
         </div>
     </footer>
+
+    <style>
+        .container {
+            flex: 1;
+        }
+    </style>
 
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->

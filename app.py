@@ -1,22 +1,22 @@
 # main.py
 from flask import Flask, request, jsonify, abort, redirect, url_for
 import sys
-from database import init_app, db
-from config.local import config
-from flask import Flask, send_file, render_template
+#from database import init_app, db
+#from config.local import config
+#from flask import Flask, send_file, render_template, init_app
 import requests
 import json
 # flask-login
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 # end flask-login
-from models import Usuario, Comentario, Producto, Compra, Suscriptor
+#from models import Usuario, Comentario, Producto, Compra, Suscriptor
 from views import views_bp
-from users_controller import users_bp
+#from users_controller import users_bp
 
 app = Flask(__name__)
-init_app(app)
+#init_app(app)
 
-app.config['SECRET_KEY'] = config['SECRET_KEY']
+#app.config['SECRET_KEY'] = config['SECRET_KEY']
 
 # Configuración de Flask-Login
 login_manager = LoginManager()
