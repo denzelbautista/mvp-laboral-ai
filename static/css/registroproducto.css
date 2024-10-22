@@ -1,90 +1,191 @@
+/* colores forms */
+:root {
+  --primary-color: #1f1f3d;
+  --hover-color: #2d2d5b;
+  --header-height: 100px; /* espacio para el header */
+}
+
+.main-wrapper {
+  display: flex;
+  min-height: calc(100vh - var(--header-height));
+  margin-top: var(--header-height);
+}
+
+.sidebar {
+  width: 240px;
+  background-color: var(--primary-color);
+  min-height: calc(100vh - var(--header-height));
+  position: fixed;
+  left: 0;
+  top: var(--header-height);
+  padding: 20px 0;
+  z-index: 100;
+}
+
+.sidebar .nav-link {
+  color: #fff;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.sidebar .nav-link:hover {
+  background-color: var(--hover-color);
+}
+
+.sidebar .nav-link.active {
+  background-color: var(--hover-color);
+}
+
+.main-content {
+  margin-left: 240px;
+  padding: 30px;
+  background-color: #f5f6fa;
+  min-height: calc(100vh - var(--header-height));
+  width: calc(100% - 240px);
+}
+
+.form-container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.page-title {
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 12px 30px;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background-color: var(--hover-color);
+}
+
+.salary-range {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.header-area.header-sticky {
+  z-index: 1000;
+}
+
+/*----------------------*/
 /* Container for the form */
 .regproductocontainer {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 footer {
-    margin-top: 0px;
+  margin-top: 0px;
 }
-
 
 /* Form heading */
 .regproductocontainer h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 /* Form group styles */
 .regproductocontainer .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .regproductocontainer .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
 }
 
 .regproductocontainer .form-group input,
 .regproductocontainer .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    color: #333;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
 }
 
 .regproductocontainer .form-group input:focus,
 .regproductocontainer .form-group textarea:focus {
-    border-color: #007bff;
-    outline: none;
+  border-color: #007bff;
+  outline: none;
 }
 
 /* File input styles */
 .regproductocontainer .form-group input[type="file"] {
-    padding: 3px;
+  padding: 3px;
 }
 
 /* Submit button styles */
 .regproductocontainer button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .regproductocontainer button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Alert styles */
 #alert {
-    text-align: center;
-    padding: 10px;
-    border-radius: 4px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
 }
 
 .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
 .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
+

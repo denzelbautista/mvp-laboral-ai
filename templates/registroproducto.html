@@ -2,106 +2,158 @@
 
 {% block content %}
 
-<div class="page-heading header-text">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3 id="product-name"></h3>
-                <span class="breadcrumb">Home > Mis Productos > Editar</span>
-            </div>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/registroproducto.css') }}">
+
+<div class="main-wrapper">
+    <!-- sidebar -->
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a href="{{url_for('views.dashboard')}}" class="nav-link">
+        <i class="fas fa-th-large"></i> Dashboard
+      </a>
+      <a href="{{url_for('views.registroproducto')}}" class="nav-link active">
+        <i class="fas fa-plus"></i> Publicar empleo
+      </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-briefcase"></i> Empleos
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-comments"></i> Chat
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-users"></i> Candidatos
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-cog"></i> Configuración
+            </a>
+            <a href="#" class="nav-link mt-auto">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </nav>
+    </div>
+
+    <!-- Formulario -->
+    <div class="main-content">
+        <h3 class="page-title">Publicar empleo</h3>
+        
+        <div class="form-container">
+            <form action="/submit" method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="empresa_id" class="form-label">ID de la Empresa:</label>
+                            <input type="text" class="form-control" name="empresa_id" placeholder="Ej: TEST HACK CORP" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombre_empleo" class="form-label">Nombre del Empleo:</label>
+                            <input type="text" class="form-control" name="nombre_empleo" placeholder="Ej: Desarrollador Web" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipo_contrato" class="form-label">Tipo de Contrato:</label>
+                            <input type="text" class="form-control" name="tipo_contrato" placeholder="Ej: Prácticas" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="modalidad" class="form-label">Modalidad:</label>
+                            <input type="text" class="form-control" name="modalidad" placeholder="Ej: Híbrido" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fecha_publicacion" class="form-label">Fecha de Publicación:</label>
+                            <input type="date" class="form-control" name="fecha_publicacion" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fecha_final" class="form-label">Fecha de Finalización:</label>
+                            <input type="date" class="form-control" name="fecha_final" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ubicacion" class="form-label">Ubicación:</label>
+                            <input type="text" class="form-control" name="ubicacion" placeholder="Ej: Lima, Perú" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="experiencia" class="form-label">Experiencia:</label>
+                            <input type="text" class="form-control" name="experiencia" placeholder="Ej: Sin Experiencia" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Salario:</label>
+                            <div class="salary-range">
+                                <input type="number" class="form-control" name="salario_min" placeholder="Mínimo" required>
+                                <span>a</span>
+                                <input type="number" class="form-control" name="salario_max" placeholder="Máximo" required>
+                                <select class="form-select">
+                                    <option>Sol Peruano</option>
+                                    <option>Dolar Estadounidense</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="vacantes" class="form-label">Vacantes:</label>
+                            <input type="number" class="form-control" name="vacantes" placeholder="Ej: 2" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    <textarea class="form-control" name="descripcion" placeholder="Descripción del empleo..." rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="funciones" class="form-label">Funciones (separadas por comas):</label>
+                    <input type="text" class="form-control" name="funciones" placeholder="Ej: Función 1, Función 2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="requisitos" class="form-label">Requisitos (separados por comas):</label>
+                    <input type="text" class="form-control" name="requisitos" placeholder="Ej: Requisito 1, Requisito 2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="beneficios" class="form-label">Beneficios (separados por comas):</label>
+                    <input type="text" class="form-control" name="beneficios" placeholder="Ej: Beneficio 1, Beneficio 2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nivel_estudios" class="form-label">Nivel de Estudios:</label>
+                    <input type="text" class="form-control" name="nivel_estudios" placeholder="Ej: Universitario" required>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-block">Publicar Empleo</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<div class="container mt-5">
-    <h2 class="text-center">Formulario de Empleo</h2>
-    <form action="/submit" method="post">
-        <div class="form-group">
-            <label for="empresa_id">ID de la Empresa:</label>
-            <input type="text" class="form-control" name="empresa_id" placeholder="Ej: TEST HACK CORP" required>
-        </div>
-
-        <div class="form-group">
-            <label for="nombre_empleo">Nombre del Empleo:</label>
-            <input type="text" class="form-control" name="nombre_empleo" placeholder="Ej: Desarrollador Web" required>
-        </div>
-
-        <div class="form-group">
-            <label for="tipo_contrato">Tipo de Contrato:</label>
-            <input type="text" class="form-control" name="tipo_contrato" placeholder="Ej: Prácticas" required>
-        </div>
-
-        <div class="form-group">
-            <label for="fecha_publicacion">Fecha de Publicación:</label>
-            <input type="date" class="form-control" name="fecha_publicacion" required>
-        </div>
-
-        <div class="form-group">
-            <label for="fecha_final">Fecha de Finalización:</label>
-            <input type="date" class="form-control" name="fecha_final" required>
-        </div>
-
-        <div class="form-group">
-            <label for="modalidad">Modalidad:</label>
-            <input type="text" class="form-control" name="modalidad" placeholder="Ej: Híbrido" required>
-        </div>
-
-        <div class="form-group">
-            <label for="ubicacion">Ubicación:</label>
-            <input type="text" class="form-control" name="ubicacion" placeholder="Ej: Lima, Perú" required>
-        </div>
-
-        <div class="form-group">
-            <label for="salario_min">Salario Mínimo:</label>
-            <input type="number" class="form-control" name="salario_min" placeholder="Ej: 1000" required>
-        </div>
-
-        <div class="form-group">
-            <label for="salario_max">Salario Máximo:</label>
-            <input type="number" class="form-control" name="salario_max" placeholder="Ej: 5000" required>
-        </div>
-
-        <div class="form-group">
-            <label for="experiencia">Experiencia:</label>
-            <input type="text" class="form-control" name="experiencia" placeholder="Ej: Sin Experiencia" required>
-        </div>
-
-        <div class="form-group">
-            <label for="vacantes">Vacantes:</label>
-            <input type="number" class="form-control" name="vacantes" placeholder="Ej: 2" required>
-        </div>
-
-        <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <textarea class="form-control" name="descripcion" placeholder="Descripción del empleo..."
-                required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="funciones">Funciones (separadas por comas):</label>
-            <input type="text" class="form-control" name="funciones" placeholder="Ej: Función 1, Función 2" required>
-        </div>
-
-        <div class="form-group">
-            <label for="requisitos">Requisitos (separados por comas):</label>
-            <input type="text" class="form-control" name="requisitos" placeholder="Ej: Requisito 1, Requisito 2"
-                required>
-        </div>
-
-        <div class="form-group">
-            <label for="beneficios">Beneficios (separados por comas):</label>
-            <input type="text" class="form-control" name="beneficios" placeholder="Ej: Beneficio 1, Beneficio 2"
-                required>
-        </div>
-
-        <div class="form-group">
-            <label for="nivel_estudios">Nivel de Estudios:</label>
-            <input type="text" class="form-control" name="nivel_estudios" placeholder="Ej: Universitario" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-block">Enviar</button>
-    </form>
-</div>
-
-
+<!-- fonts for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
