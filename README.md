@@ -227,11 +227,23 @@ Base URL: `https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos`
 #### 2. Listar Empleos
 
 - **URL**: `POST /empleos/listartodos`
-- **Descripción**: Lista todos los empleos asociados a una empresa.
+- **Descripción**: Lista todos los empleos asociados en la base de datos.
 - **Body**:
 ```json
 {}
 ```
+
+#### 3. Listar Empleos por Empresa
+
+- **URL**: `POST /empleos/listarporempresa`
+- **Descripción**: Lista todos los empleos asociados a una empresa.
+- **Body**:
+```json
+{
+  "empresa_id" : "123456"
+}
+```
+
 
 #### 3. Modificar Empleo
 
