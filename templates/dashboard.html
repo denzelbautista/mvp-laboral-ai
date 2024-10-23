@@ -1,46 +1,52 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% block content %}
 <style>
   .table-container {
     max-width: 1000px;
     margin-left: 240px;
     padding: 1rem;
   }
+
   .action-icon {
     color: #666;
     margin: 0 5px;
     cursor: pointer;
   }
+
   .action-icon:hover {
     color: #333;
   }
+
   .new-job-btn {
     margin-top: 1rem;
   }
+
   td,
   th {
     line-height: 40px;
   }
 </style>
 
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/registroproducto.css') }}"
-/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/registroproducto.css') }}" />
 <div class="main-wrapper">
   <!-- sidebar -->
   <div class="sidebar">
     <nav class="nav flex-column">
-      <a href="{{url_for('views.dashboard')}}" class="nav-link active">
+      <a href="{{ url_for('empleos') }}" class="nav-link active">
         <i class="fas fa-th-large"></i> Dashboard
       </a>
-      <a href="{{url_for('views.registroproducto')}}" class="nav-link">
+      <a href="{{ url_for('views.registroproducto') }}" class="nav-link">
         <i class="fas fa-plus"></i> Publicar empleo
       </a>
       <a href="#" class="nav-link">
         <i class="fas fa-briefcase"></i> Empleos
       </a>
-      <a href="#" class="nav-link"> <i class="fas fa-comments"></i> Chat </a>
-      <a href="#" class="nav-link"> <i class="fas fa-users"></i> Candidatos </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-comments"></i> Chat
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-users"></i> Candidatos
+      </a>
       <a href="#" class="nav-link">
         <i class="fas fa-cog"></i> Configuración
       </a>
@@ -52,90 +58,36 @@
 
   <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 table-container">
     <div class="content-header">
-      <h1>Ultimos empleos publicados</h1>
+      <h1>Últimos empleos publicados</h1>
     </div>
 
     <div class="table-responsive rounded">
       <table class="table table-hover bg-light">
         <thead>
           <tr>
-            <th>Título de Puesto</th>
-            <th>Nº de Candidatos</th>
+            <th>Nombre del Empleo</th>
+            <th>Vacantes</th>
             <th>Fecha de Publicación</th>
-            <th>Fecha de Finalización</th>
-            <th>Acciones</th>
+            <th>Fecha Final</th>
           </tr>
         </thead>
         <tbody id="jobsTableBody">
-          <!-- fill with js -->
+          {% for empleo in empleos %}
+          <tr>
+            <td>{{ empleo['empleo_datos']['nombre_empleo'] }}</td>
+            <td>{{ empleo['empleo_datos']['vacantes'] }}</td>
+            <td>{{ empleo['empleo_datos']['fecha_publicacion'] }}</td>
+            <td>{{ empleo['empleo_datos']['fecha_final'] }}</td>
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
-    <button class="btn btn-primary new-job-btn">
+    
+    <button class="btn btn-primary new-job-btn" onclick="location.href='{{ url_for('views.registroproducto') }}'">
       <i class="fas fa-plus"></i> Nuevo Empleo
     </button>
   </main>
 </div>
-
-<!-- add examples with js-->
-<script>
-  const jobs = [
-    {
-      title: "Desarrollador web",
-      candidates: 56,
-      publishDate: "01/04/2024",
-      endDate: "28/04/2024",
-    },
-    {
-      title: "Analista de datos",
-      candidates: 10,
-      publishDate: "21/04/2024",
-      endDate: "10/05/2024",
-    },
-    {
-      title: "Experto en redes",
-      candidates: "+100",
-      publishDate: "10/03/2024",
-      endDate: "03/04/2024",
-    },
-    {
-      title: "Desarrollador android",
-      candidates: 8,
-      publishDate: "02/01/2024",
-      endDate: "10/02/2024",
-    },
-    {
-      title: "Desarrollador IO's",
-      candidates: 3,
-      publishDate: "20/12/2023",
-      endDate: "15/01/2024",
-    },
-  ];
-
-  function renderJobs() {
-    const tbody = document.getElementById("jobsTableBody");
-    tbody.innerHTML = jobs
-      .map(
-        (job) => `
-                <tr>
-                    <td>${job.title}</td>
-                    <td>${job.candidates}</td>
-                    <td>${job.publishDate}</td>
-                    <td>${job.endDate}</td>
-                    <td>
-                        <i class="fas fa-file-alt action-icon" title="Ver detalles"></i>
-                        <i class="fas fa-download action-icon" title="Descargar"></i>
-                        <i class="fas fa-pause action-icon" title="Pausar"></i>
-                        <i class="fas fa-trash action-icon" title="Eliminar"></i>
-                    </td>
-                </tr>
-            `,
-      )
-      .join("");
-  }
-
-  // load on activeTab
-  document.addEventListener("DOMContentLoaded", renderJobs);
-</script>
 
 {% endblock %}

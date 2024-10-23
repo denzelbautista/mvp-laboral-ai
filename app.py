@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify , render_template
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask import Flask, redirect, url_for, request, jsonify
 from views import views_bp
+from flask_login import LoginManager
+import json
+
 import requests
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Establece una clave secreta para la gestión de sesiones
@@ -100,7 +103,7 @@ def create_empleo():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    # Captura de datos del formulario
+  
     empresa_id = request.form.get("empresa_id")
     empleo_datos = {
         "nombre_empleo": request.form.get("nombre_empleo"),
@@ -125,16 +128,36 @@ def submit():
         "empleo_datos": empleo_datos
     }
 
-    # Enviar datos a la API externa
+ 
     api_url = "https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos/crear"
     headers = {"Content-Type": "application/json"}
     response = requests.post(api_url, json=data, headers=headers)
 
-    # Mostrar la respuesta de la API
+   
     if response.status_code == 200:
-        return jsonify({"status": "success", "response_data": response.json()})
+         return render_template('dashboard.html')
     else:
-        return jsonify({"status": "error", "message": "Error al enviar los datos", "details": response.text}), response.status_code
+        return jsonify({"error": "La solicitud a la API falló"}), 500
+    
+
+@app.route('/empleos', methods=['GET'])
+def empleos():
+    empresa_id = "c2bea60b-48b6-48c8-8b23-92e1f688a5b2"
+    api_url = "https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos/listarporempresa"
+    headers = {"Content-Type": "application/json"}
+    data = {"empresa_id": empresa_id}
+    
+  
+    response = requests.post(api_url, json=data, headers=headers)
+    
+    if response.status_code == 200:
+        empleos_data = response.json().get('body', '[]')
+        empleos = json.loads(empleos_data)
+    else:
+        empleos = []
+
+    return render_template('dashboard.html', empleos=empleos)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
