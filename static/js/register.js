@@ -32,17 +32,11 @@ document.getElementById('register').addEventListener('submit', async (event) => 
 
         if (response.ok && result.success) {
             localStorage.setItem('authToken', result.token);
-            alert('Registro exitoso e inicio de sesión automático.');
-
             window.location.href = '/dashboard';
         } else {
-            //alert(result.message || 'Error en el registro.');
-            alert(empresaData)
+            alert(result.message || 'Error en el registro.');
         }
     } catch (error) {
         console.error('Error al enviar los datos:', error);
-        //alert('Hubo un problema con el registro.');
-        alert(empresaData)
-
     }
 });
