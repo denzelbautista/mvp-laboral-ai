@@ -1,5 +1,9 @@
 {% extends "base.html" %} {% block content %}
 <style>
+  .main-wrapper {
+    display: none;
+  }
+
   .table-container {
     max-width: 1000px;
     margin-left: 240px;
@@ -81,10 +85,13 @@
 <!-- add examples with js-->
 <script>
   window.onload = function () {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (!token) {
       // Redirigir a la página de inicio de sesión
       window.location.href = '/login';
+    } else {
+      // Mostrar el contenido protegido
+      document.querySelector('.protected-content').style.display = 'block';
     }
   };
 
