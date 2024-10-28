@@ -80,6 +80,14 @@
 
 <!-- add examples with js-->
 <script>
+  window.onload = function () {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Redirigir a la página de inicio de sesión
+      window.location.href = '/login';
+    }
+  };
+
   const jobs = [
     {
       title: "Desarrollador web",

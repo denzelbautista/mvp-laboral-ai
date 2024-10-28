@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify , render_template
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from views import views_bp
+import json
 import requests
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Establece una clave secreta para la gestión de sesiones
@@ -21,66 +22,62 @@ next_product_id = 1
 def load_user(user_id):
     return usuarios.get(int(user_id))
 
-@app.route('/productos/<int:id>', methods=['GET'])
-def get_producto(id):
-    producto = productos.get(id)
-    if producto:
-        return jsonify({'success': True, 'producto': producto}), 200
-    return jsonify({'success': False, 'message': 'Producto no encontrado'}), 404
-
-@app.route('/productos/<int:producto_id>', methods=['PATCH'])
-def update_stock(producto_id):
-    producto = productos.get(producto_id)
-    if not producto:
-        return jsonify({'success': False, 'message': 'Producto no encontrado'}), 404
-    
-    cantidad = request.json.get('cantidad', 0)
-    if producto['stock'] >= cantidad:
-        producto['stock'] -= cantidad
-        return jsonify({'success': True, 'message': 'Stock actualizado'}), 200
-    return jsonify({'success': False, 'message': 'Stock insuficiente'}), 400
-
-@app.route('/productos/<int:id>', methods=['DELETE'])
-def delete_producto(id):
-    if id in productos:
-        del productos[id]
-        return jsonify({'success': True, 'message': 'Producto eliminado correctamente'}), 200
-    return jsonify({'success': False, 'message': 'Producto no encontrado'}), 404
-
-@app.route('/usuario/<int:product_id>/producto', methods=['GET'])
-def get_usuario_by_product_id(product_id):
-    producto = productos.get(product_id)
-    if not producto:
-        return jsonify({"success": False, "message": "Producto no encontrado"}), 404
-
-    usuario = usuarios.get(producto['vendedor_id'])
-    if not usuario:
-        return jsonify({"success": False, "message": "Usuario no encontrado"}), 404
-
-    return jsonify({
-        "success": True,
-        "usuario": {
-            "nombre": usuario['nombre'],
-            "telefono": usuario['telefono']
-        }
-    })
-
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register_user():
-    global next_user_id
     data = request.json
-    if not data or 'nombre' not in data or 'telefono' not in data or 'password' not in data:
+
+    # Validación de los campos recibidos
+    required_fields = ['nombre', 'razon_social', 'RUC', 'correo', 'numero_contacto', 'contrasena']
+    if not all(field in data for field in required_fields):
         return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
-    
-    usuario = {
-        'id': next_user_id,
-        'nombre': data['nombre'],
-        'telefono': data['telefono'],
-        'password': data['password']  # En una aplicación real, almacena la contraseña hasheada
+
+    # Preparar datos para enviar a la API Lambda
+    lambda_payload = {
+        'empresa_datos': {
+            'nombre': data['nombre'],
+            'razon_social': data['razon_social'],
+            'RUC': data['RUC'],
+            'correo': data['correo'],
+            'numero_contacto': int(data['numero_contacto']),
+            'contrasena': data['contrasena']
+        }
     }
-    usuarios[next_user_id] = usuario
-    next_user_id += 1
-    return jsonify({'success': True, 'message': 'Usuario registrado'}), 201
+
+    try:
+        # Hacer la solicitud a la API Lambda
+        lambda_response = requests.post(
+            'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/register', 
+            json=lambda_payload
+        )
+
+        # Convertir la respuesta a JSON
+        lambda_result = lambda_response.json()
+        
+        # Imprimir la respuesta para depuración
+        print("Respuesta de Lambda:", lambda_result)
+
+        # Verificar el código de estado de la respuesta de Lambda
+        if lambda_response.status_code == 200:
+            # Descomponer el cuerpo
+            body = json.loads(lambda_result['body'])  # Convertir el body de string a dict
+            
+            # Verificar el éxito de la creación
+            if body.get('success'):
+                # Extraer el token de la respuesta de Lambda
+                token = body.get('token', None)
+                return jsonify({'success': True, 'message': 'Usuario registrado', 'token': token}), 201
+            else:
+                # Manejar el caso donde 'success' es False
+                return jsonify({'success': False, 'message': body.get('message', 'Error en registro')}), 400
+        else:
+            # Manejar el error de respuesta no exitosa
+            return jsonify({'success': False, 'message': 'Error en la respuesta de Lambda'}), lambda_response.status_code
+
+    except Exception as e:
+        # Manejo de errores generales
+        return jsonify({'success': False, 'message': 'Error al registrar usuario', 'error': str(e)}), 500
+
+
 
 @app.route('/login', methods=['POST'])
 def login():
