@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify , render_template
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 from views import views_bp
 import json
 import requests
@@ -18,9 +18,20 @@ productos = {}
 next_user_id = 1
 next_product_id = 1
 
+# Define la clase Usuario que hereda de UserMixin
+class Usuario(UserMixin):
+    def __init__(self, id, nombre, password):
+        self.id = id
+        self.nombre = nombre
+        self.password = password
+
+# Modifica la función `load_user` para retornar un objeto `Usuario`
 @login_manager.user_loader
 def load_user(user_id):
-    return usuarios.get(int(user_id))
+    user_data = usuarios.get(int(user_id))
+    if user_data:
+        return Usuario(id=user_id, nombre=user_data["nombre"], password=user_data["password"])
+    return None
 
 @app.route('/api/register', methods=['POST'])
 def register_user():
@@ -79,17 +90,58 @@ def register_user():
 
 
 
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/api/login', methods=['POST'])
+
+def login_user():
     data = request.json
-    if not data or 'nombre' not in data or 'password' not in data:
+
+    # Validar que se reciban los campos necesarios
+    required_fields = ['correo', 'contrasena']
+    if not all(field in data for field in required_fields):
         return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
-    
-    for usuario in usuarios.values():
-        if usuario['nombre'] == data['nombre'] and usuario['password'] == data['password']:
-            login_user(usuario)
-            return jsonify({'success': True, 'message': 'Login exitoso'}), 200
-    return jsonify({'success': False, 'message': 'Credenciales incorrectas'}), 401
+
+    # Preparar datos para enviar a la API Lambda
+    lambda_payload = {
+        'correo': data['correo'],
+        'contrasena': data['contrasena']
+    }
+
+    try:
+        # Hacer la solicitud a la API Lambda
+        lambda_response = requests.post(
+            'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/login', 
+            json=lambda_payload
+        )
+
+        # Convertir la respuesta a JSON
+        lambda_result = lambda_response.json()
+        
+        # Verificar el código de estado de la respuesta de Lambda
+        if lambda_response.status_code == 200:
+            body = json.loads(lambda_result['body'])
+
+            # Verificar si el inicio de sesión fue exitoso
+            if body.get('success'):
+                # Extraer el token
+                token = body.get('token', None)
+                return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'token': token}), 200
+            else:
+                # Manejar el caso donde 'success' es False
+                return jsonify({'success': False, 'message': body.get('message', 'Credenciales incorrectas')}), 401
+        else:
+            # Manejar el error de respuesta no exitosa
+            return jsonify({'success': False, 'message': 'Error en la respuesta de Lambda'}), lambda_response.status_code
+
+    except Exception as e:
+        # Manejo de errores generales
+        return jsonify({'success': False, 'message': 'Error al iniciar sesión', 'error': str(e)}), 500
+
+@app.route('/api/logout', methods=['POST'])
+@login_required
+def logout_user():
+    # Cerrar la sesión usando Flask-Login
+    logout_user()
+    return jsonify({'success': True, 'message': 'Sesión cerrada exitosamente'}), 200
 
 @app.route('/nuevo_empleo')
 def create_empleo():
