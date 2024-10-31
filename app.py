@@ -184,6 +184,7 @@ def submit():
         return jsonify({"status": "success", "response_data": response.json()})
     else:
         return jsonify({"status": "error", "message": "Error al enviar los datos", "details": response.text}), response.status_code
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,9 +1,8 @@
 # views.py
-import json
 from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 from flask_login import UserMixin, current_user, login_required, login_user, logout_user
 import requests
-
+import json
 # Crea un Blueprint llamado 'views'
 views_bp = Blueprint("views", __name__)
 
@@ -18,10 +17,23 @@ def index():
     return render_template("index.html")
 
 
-@views_bp.route("/shop")
+@views_bp.route("/empleos_listar")
 def shop():
-    return render_template("shop.html")
+    response = requests.post('https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos/listartodos', json={})
+    
+    if response.status_code == 200:
+        
+        body = response.json().get('body')
+        if body:
+            empleos = json.loads(body)  
+            
+        else:
+            empleos = []
+    else:
+        empleos = []
+        print("Error en la API:", response.status_code)
 
+    return render_template("shop.html", empleos=empleos)
 
 @views_bp.route("/contact")
 def contact():
