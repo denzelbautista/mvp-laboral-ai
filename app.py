@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify , render_template
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask import Flask, request, jsonify , render_template , Request , redirect , url_for
+from flask_login import LoginManager, login_user
 from views import views_bp
 import json
 import requests
@@ -129,7 +129,7 @@ def submit():
 
     # Mostrar la respuesta de la API
     if response.status_code == 200:
-        return jsonify({"status": "success", "response_data": response.json()})
+        return redirect(url_for('empleos_listar'))
     else:
         return jsonify({"status": "error", "message": "Error al enviar los datos", "details": response.text}), response.status_code
     
