@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
 <style>
   .main-wrapper {
     display: none;
@@ -49,15 +50,17 @@
       <a href="#" class="nav-link">
         <i class="fas fa-cog"></i> Configuración
       </a>
-      <a href="#" class="nav-link mt-auto">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </a>
+      <form action="{{ url_for('views.logout') }}" method="POST" style="margin-top: auto;">
+        <button type="submit" class="nav-link">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+      </form>
     </nav>
   </div>
 
   <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 table-container">
     <div class="content-header">
-      <h1>Ultimos empleos publicados</h1>
+      <h1>Últimos empleos publicados</h1>
     </div>
 
     <div class="table-responsive rounded">
@@ -82,7 +85,6 @@
   </main>
 </div>
 
-<!-- add examples with js-->
 <script>
   window.onload = function () {
     const token = localStorage.getItem('authToken');

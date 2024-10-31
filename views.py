@@ -46,41 +46,19 @@ def register():
 @views_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        # Obtener los datos del formulario
         correo = request.form.get("correo")
         contrasena = request.form.get("contrasena")
 
-        lambda_payload = {
-            'correo': correo,
-            'contrasena': contrasena
-        }
+        # Imprime los valores para depuración
+        print(f"Correo: {correo}, Contraseña: {contrasena}")
 
-        try:
-            lambda_response = requests.post(
-                'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/login',
-                json=lambda_payload
-            )
-
-            print("Lambda response:", lambda_response.text)  # Debug: Muestra la respuesta completa
-
-            if lambda_response.status_code == 200:
-                try:
-                    lambda_result = lambda_response.json()
-                    body = json.loads(lambda_result.get('body', '{}'))
-
-                    if body.get('success'):
-                        user_id = body.get('user_id')
-                        user = TempUser(id=user_id)
-                        login_user(user)
-                        return redirect(url_for("views.dashboard"))
-                    else:
-                        return jsonify({"success": False, "message": "Credenciales incorrectas"}), 401
-                except json.JSONDecodeError:
-                    return jsonify({"success": False, "message": "Error en formato JSON de Lambda"}), 500
-            else:
-                return jsonify({"success": False, "message": "Error en la respuesta de Lambda"}), lambda_response.status_code
-
-        except Exception as e:
-            return jsonify({"success": False, "message": "Error al iniciar sesión", "error": str(e)}), 500
+        # Verifica si ambos campos fueron completados
+        if correo and contrasena:
+            # Redirige a la página de dashboard si se ingresaron ambos campos
+            return redirect(url_for("views.dashboard"))
+        else:
+            return jsonify({"success": False, "message": "Debe ingresar correo y contraseña"}), 400
 
     return render_template("login.html")
 
