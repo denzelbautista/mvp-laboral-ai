@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify , render_template , Request , redirect , url_for
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user, login_required
 from views import views_bp
 import json
 import requests
@@ -33,13 +33,13 @@ def register_user():
 
     # Preparar datos para enviar a la API Lambda
     lambda_payload = {
+        'correo_admin': data['correo'],
+        'contrasena_admin': data['contrasena'],
+        'ruc': data['RUC'],
+        'razon_social': data['razon_social'],
         'empresa_datos': {
             'nombre': data['nombre'],
-            'razon_social': data['razon_social'],
-            'RUC': data['RUC'],
-            'correo': data['correo'],
-            'numero_contacto': int(data['numero_contacto']),
-            'contrasena': data['contrasena']
+            'telefono': int(data['numero_contacto'])
         }
     }
 
@@ -77,19 +77,57 @@ def register_user():
         # Manejo de errores generales
         return jsonify({'success': False, 'message': 'Error al registrar usuario', 'error': str(e)}), 500
 
-
-
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/api/login', methods=['POST'])
+def login_user():
     data = request.json
-    if not data or 'nombre' not in data or 'password' not in data:
+
+    # Validar que se reciban los campos necesarios
+    required_fields = ['correo', 'contrasena']
+    if not all(field in data for field in required_fields):
         return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
-    
-    for usuario in usuarios.values():
-        if usuario['nombre'] == data['nombre'] and usuario['password'] == data['password']:
-            login_user(usuario)
-            return jsonify({'success': True, 'message': 'Login exitoso'}), 200
-    return jsonify({'success': False, 'message': 'Credenciales incorrectas'}), 401
+
+    # Preparar datos para enviar a la API Lambda
+    lambda_payload = {
+        'correo_admin': data['correo'],
+        'contrasena_admin': data['contrasena']
+    }
+
+    try:
+        # Hacer la solicitud a la API Lambda
+        lambda_response = requests.post(
+            'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/login', 
+            json=lambda_payload
+        )
+
+        # Convertir la respuesta a JSON
+        lambda_result = lambda_response.json()
+        
+        # Verificar el código de estado de la respuesta de Lambda
+        if lambda_response.status_code == 200:
+            body = json.loads(lambda_result['body'])
+
+            # Verificar si el inicio de sesión fue exitoso
+            if body.get('success'):
+                # Extraer el token
+                token = body.get('token', None)
+                return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'token': token}), 200
+            else:
+                # Manejar el caso donde 'success' es False
+                return jsonify({'success': False, 'message': body.get('message', 'Credenciales incorrectas')}), 401
+        else:
+            # Manejar el error de respuesta no exitosa
+            return jsonify({'success': False, 'message': 'Error en la respuesta de Lambda'}), lambda_response.status_code
+
+    except Exception as e:
+        # Manejo de errores generales
+        return jsonify({'success': False, 'message': 'Error al iniciar sesión', 'error': str(e)}), 500
+
+@app.route('/api/logout', methods=['POST'])
+@login_required
+def logout_user():
+    # Cerrar la sesión usando Flask-Login
+    logout_user()
+    return jsonify({'success': True, 'message': 'Sesión cerrada exitosamente'}), 200
 
 @app.route('/nuevo_empleo')
 def create_empleo():
