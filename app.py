@@ -136,7 +136,7 @@ def create_empleo():
 @app.route('/submit', methods=['POST'])
 def submit():
     # Captura de datos del formulario
-    empresa_id = request.form.get("empresa_id")
+    empresa_id = request.form.get("empresa_id") #ahora con token será diferente
     empleo_datos = {
         "nombre_empleo": request.form.get("nombre_empleo"),
         "tipo_contrato": request.form.get("tipo_contrato"),
@@ -167,7 +167,7 @@ def submit():
 
     # Mostrar la respuesta de la API
     if response.status_code == 200:
-        return redirect(url_for('empleos_listar'))
+        return redirect(url_for('views.empleos_listar'))
     else:
         return jsonify({"status": "error", "message": "Error al enviar los datos", "details": response.text}), response.status_code
     
