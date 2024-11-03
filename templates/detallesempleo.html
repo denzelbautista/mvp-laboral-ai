@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Styles -->
+
+
+
+<style>
+  .job-details-wrapper{
+    margin-top: 100px;
+  }
+  .general-description-job{
+    background-color: #F9F8F8;
+  }
+
+</style>
+<!-- Header -->
+
+<div class="header-text"></div>
+<!-- Detalles de Empleo -->
+<div class="job-details-wrapper container py-5">
+    <div class="row">
+        <!-- Descripción -->
+        <div class="col-lg-8">
+            <div class="general-description-job card shadow-sm">
+                <div class="card-body">
+                    <!-- Puesto y jornada -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2 mb-0">Desarrollador de nada</h1>
+                        <span class="badge bg-primary px-3 py-2">
+                            <i class="fas fa-clock me-1"></i>
+                            Tiempo Completo
+                        </span>
+                    </div>
+
+                    <!-- Descripción del trabajo -->
+                    <div class="mb-4">
+                        <h5 class="text-primary">
+                            <i class="fas fa-info-circle me-2"></i>Descripción
+                        </h5>
+                        <p class="text-muted">Estamos buscando un desarrollador backend con experiencia en Python y Django.</p>
+                    </div>
+
+                    <!-- Funciones -->
+                    <div class="mb-4">
+                        <h5 class="text-primary">
+                            <i class="fas fa-tasks me-2"></i>Funciones
+                        </h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Desarrollar y mantener aplicaciones web</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Colaborar con el equipo de frontend</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Realizar pruebas y depuración</li>
+                        </ul>
+                    </div>
+
+                    <!-- Requerimientos -->
+                    <div class="mb-4">
+                        <h5 class="text-primary">
+                            <i class="fas fa-list-ul me-2"></i>Requisitos
+                        </h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Conocimientos en bases de datos SQL</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Experiencia en REST APIs</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Habilidades de comunicación</li>
+                        </ul>
+                    </div>
+
+                    <!-- Beneficios -->
+                    <div class="mb-4">
+                        <h5 class="text-primary">
+                            <i class="fas fa-gift me-2"></i>Beneficios
+                        </h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>Seguro de salud</li>
+                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>Días libres adicionales</li>
+                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>Oportunidades de capacitación</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalles del puesto -->
+        <div class="col-lg-4">
+            <div class="general-description-job card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="text-primary mb-4">
+                        <i class="fas fa-briefcase me-2"></i>Detalles del puesto
+                    </h5>
+                    
+                    <div class="mb-3">
+                        <p class="mb-2">
+                            <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                            <strong>Ubicación:</strong> Lima, Perú
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-money-bill-wave text-success me-2"></i>
+                            <strong>Salario:</strong> S/. 5,000 - 10,000
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-laptop-house text-info me-2"></i>
+                            <strong>Modalidad:</strong> Remoto
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-user-graduate text-primary me-2"></i>
+                            <strong>Educación:</strong> Licenciatura en Ciencias de la Computación
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-briefcase text-secondary me-2"></i>
+                            <strong>Experiencia:</strong> 3 años
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-users text-success me-2"></i>
+                            <strong>Vacantes:</strong> 2
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-calendar-alt text-danger me-2"></i>
+                            <strong>Publicado:</strong> 12/10/2024
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-hourglass-end text-warning me-2"></i>
+                            <strong>Fecha límite:</strong> 12/11/2024
+                        </p>
+                    </div>
+
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-paper-plane me-2"></i>Postular ahora
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

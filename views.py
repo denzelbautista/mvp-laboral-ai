@@ -1,8 +1,10 @@
 # views.py
+import json
+
+import requests
 from flask import Blueprint, render_template, request
 from flask_login import current_user, login_required, login_user, logout_user
-import requests
-import json
+
 # Crea un Blueprint llamado 'views'
 views_bp = Blueprint("views", __name__)
 
@@ -14,14 +16,17 @@ def index():
 
 @views_bp.route("/empleos_listar")
 def shop():
-    response = requests.post('https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos/listartodos', json={})
-    
+    response = requests.post(
+        "https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos/listartodos",
+        json={},
+    )
+
     if response.status_code == 200:
-        
-        body = response.json().get('body')
+
+        body = response.json().get("body")
         if body:
-            empleos = json.loads(body)  
-            
+            empleos = json.loads(body)
+
         else:
             empleos = []
     else:
@@ -29,6 +34,7 @@ def shop():
         print("Error en la API:", response.status_code)
 
     return render_template("shop.html", empleos=empleos)
+
 
 @views_bp.route("/contact")
 def contact():
@@ -85,3 +91,8 @@ def profile():
 @views_bp.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
+
+
+@views_bp.route("/detallesempleo")
+def detallesempleo():
+    return render_template("detallesempleo.html")
