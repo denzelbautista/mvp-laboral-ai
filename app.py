@@ -81,46 +81,34 @@ def register_user():
 def login_user():
     data = request.json
 
-    # Validar que se reciban los campos necesarios
     required_fields = ['correo', 'contrasena']
     if not all(field in data for field in required_fields):
         return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
 
-    # Preparar datos para enviar a la API Lambda
     lambda_payload = {
         'correo_admin': data['correo'],
-        'contrasena_admin': data['contrasena']
+        'contrasena_proporcionada': data['contrasena']
     }
 
     try:
-        # Hacer la solicitud a la API Lambda
         lambda_response = requests.post(
-            'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/login', 
+            'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/login',
             json=lambda_payload
         )
 
-        # Convertir la respuesta a JSON
-        lambda_result = lambda_response.json()
-        
-        # Verificar el código de estado de la respuesta de Lambda
         if lambda_response.status_code == 200:
-            body = json.loads(lambda_result['body'])
-
-            # Verificar si el inicio de sesión fue exitoso
+            body = json.loads(lambda_response.json()['body'])  # Deserializar el cuerpo de la respuesta
             if body.get('success'):
-                # Extraer el token
-                token = body.get('token', None)
+                token = body.get('token')
                 return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'token': token}), 200
             else:
-                # Manejar el caso donde 'success' es False
                 return jsonify({'success': False, 'message': body.get('message', 'Credenciales incorrectas')}), 401
         else:
-            # Manejar el error de respuesta no exitosa
             return jsonify({'success': False, 'message': 'Error en la respuesta de Lambda'}), lambda_response.status_code
 
     except Exception as e:
-        # Manejo de errores generales
         return jsonify({'success': False, 'message': 'Error al iniciar sesión', 'error': str(e)}), 500
+
 
 @app.route('/api/logout', methods=['POST'])
 @login_required
