@@ -58,16 +58,12 @@ def register():
 @views_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Obtener los datos del formulario
         correo = request.form.get("correo")
         contrasena = request.form.get("contrasena")
 
-        # Imprime los valores para depuración
         print(f"Correo: {correo}, Contraseña: {contrasena}")
 
-        # Verifica si ambos campos fueron completados
         if correo and contrasena:
-            # Redirige a la página de dashboard si se ingresaron ambos campos
             return redirect(url_for("views.dashboard"))
         else:
             return jsonify({"success": False, "message": "Debe ingresar correo y contraseña"}), 400
