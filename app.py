@@ -1,11 +1,15 @@
-from flask import Flask, request, jsonify , render_template , Request , redirect , url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_login import LoginManager, login_user, logout_user, login_required
+import requests
+from functools import wraps
 from views import views_bp
 import json
-import requests
+import re
+
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Establece una clave secreta para la gestión de sesiones
+app.secret_key = 'your_secret_key'  
 app.register_blueprint(views_bp)
+SECRET_KEY = 'xdxd'
 
 # Configuración de Flask-Login
 login_manager = LoginManager()
@@ -25,7 +29,6 @@ def load_user(user_id):
 @app.route('/api/register', methods=['POST'])
 def register_user():
     data = request.json
-
     # Validación de los campos recibidos
     required_fields = ['nombre', 'razon_social', 'RUC', 'correo', 'numero_contacto', 'contrasena']
     if not all(field in data for field in required_fields):
@@ -53,9 +56,6 @@ def register_user():
         # Convertir la respuesta a JSON
         lambda_result = lambda_response.json()
         
-        # Imprimir la respuesta para depuración
-        print("Respuesta de Lambda:", lambda_result)
-
         # Verificar el código de estado de la respuesta de Lambda
         if lambda_response.status_code == 200:
             # Descomponer el cuerpo
@@ -63,69 +63,69 @@ def register_user():
             
             # Verificar el éxito de la creación
             if body.get('success'):
-                # Extraer el token de la respuesta de Lambda
+                
                 token = body.get('token', None)
                 return jsonify({'success': True, 'message': 'Usuario registrado', 'token': token}), 201
             else:
-                # Manejar el caso donde 'success' es False
                 return jsonify({'success': False, 'message': body.get('message', 'Error en registro')}), 400
         else:
-            # Manejar el error de respuesta no exitosa
             return jsonify({'success': False, 'message': 'Error en la respuesta de Lambda'}), lambda_response.status_code
 
     except Exception as e:
-        # Manejo de errores generales
         return jsonify({'success': False, 'message': 'Error al registrar usuario', 'error': str(e)}), 500
+    
+@app.route('/api/login', methods=[ 'POST'])
+def login_user_api():
+    if request.method == 'POST':
+        data = request.form  
+        required_fields = ['correo', 'contrasena']
+        if not all(field in data for field in required_fields):
+            return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
 
-@app.route('/api/login', methods=['POST'])
-def login_user():
-    data = request.json
-
-    # Validar que se reciban los campos necesarios
-    required_fields = ['correo', 'contrasena']
-    if not all(field in data for field in required_fields):
-        return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
-
-    # Preparar datos para enviar a la API Lambda
-    lambda_payload = {
-        'correo_admin': data['correo'],
-        'contrasena_admin': data['contrasena']
-    }
-
-    try:
-        # Hacer la solicitud a la API Lambda
-        lambda_response = requests.post(
-            'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/login', 
-            json=lambda_payload
-        )
-
-        # Convertir la respuesta a JSON
-        lambda_result = lambda_response.json()
         
-        # Verificar el código de estado de la respuesta de Lambda
-        if lambda_response.status_code == 200:
-            body = json.loads(lambda_result['body'])
+        lambda_payload = {
+            'correo_admin': data['correo'],
+            'contrasena_proporcionada': data['contrasena']
+        }
 
-            # Verificar si el inicio de sesión fue exitoso
-            if body.get('success'):
-                # Extraer el token
-                token = body.get('token', None)
-                return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'token': token}), 200
+        try:
+            
+            lambda_response = requests.post(
+                'https://cuneyfem18.execute-api.us-east-1.amazonaws.com/prod/auth/login',
+                json=lambda_payload
+            )
+
+            if lambda_response.status_code == 200:
+                lambda_result = lambda_response.json()
+                body = json.loads(lambda_result['body'])
+
+                
+                if body.get('success'):
+                    token = body.get('token', None)
+                    if not token:
+                        return jsonify({'success': False, 'message': 'Token no encontrado en la respuesta'}), 500
+
+                    
+                    session['token'] = token
+                    
+                    return redirect(url_for('views.dashboard'))
+
+                else:
+                    
+                    return render_template('login.html', error_message=body.get('message', 'Credenciales incorrectas'))
             else:
-                # Manejar el caso donde 'success' es False
-                return jsonify({'success': False, 'message': body.get('message', 'Credenciales incorrectas')}), 401
-        else:
-            # Manejar el error de respuesta no exitosa
-            return jsonify({'success': False, 'message': 'Error en la respuesta de Lambda'}), lambda_response.status_code
+                return render_template('login.html', error_message='Error en la respuesta de Lambda')
 
-    except Exception as e:
-        # Manejo de errores generales
-        return jsonify({'success': False, 'message': 'Error al iniciar sesión', 'error': str(e)}), 500
+        except requests.exceptions.RequestException as e:
+            return render_template('login.html', error_message=f'Error en la solicitud a Lambda: {str(e)}')
+    else:
+        
+        return render_template('login.html')
+
 
 @app.route('/api/logout', methods=['POST'])
 @login_required
-def logout_user():
-    # Cerrar la sesión usando Flask-Login
+def logout_user_api():
     logout_user()
     return jsonify({'success': True, 'message': 'Sesión cerrada exitosamente'}), 200
 
@@ -133,10 +133,18 @@ def logout_user():
 def create_empleo():
     return render_template('registroproducto.html')
 
+
+
+
 @app.route('/submit', methods=['POST'])
 def submit():
-    # Captura de datos del formulario
-    empresa_id = request.form.get("empresa_id") #ahora con token será diferente
+    
+    token = session.get('token')
+
+    if not token:
+        return jsonify({'message': '¡Falta el token!'}), 403
+
+    
     empleo_datos = {
         "nombre_empleo": request.form.get("nombre_empleo"),
         "tipo_contrato": request.form.get("tipo_contrato"),
@@ -155,23 +163,28 @@ def submit():
         "nivel_estudios": request.form.get("nivel_estudios")
     }
 
+    api_url = "https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos/crear"
+    
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
+
+   
     data = {
-        "empresa_id": empresa_id,
         "empleo_datos": empleo_datos
     }
 
-    # Enviar datos a la API externa
-    api_url = "https://azy1wlrgli.execute-api.us-east-1.amazonaws.com/prod/empleos/crear"
-    headers = {"Content-Type": "application/json"}
     response = requests.post(api_url, json=data, headers=headers)
 
-    # Mostrar la respuesta de la API
     if response.status_code == 200:
-        return redirect(url_for('views.empleos_listar'))
+        return redirect(url_for('views.shop')) 
     else:
-        return jsonify({"status": "error", "message": "Error al enviar los datos", "details": response.text}), response.status_code
-    
+        
+        return jsonify({'success': False, 'message': 'Error al registrar el empleo', 'details': response.json()}), 500
+
+
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
-

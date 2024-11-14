@@ -89,6 +89,7 @@ def profile():
 
 
 @views_bp.route("/dashboard")
+
 def dashboard():
     return render_template("dashboard.html")
 
