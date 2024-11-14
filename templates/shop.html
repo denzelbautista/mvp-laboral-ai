@@ -1,136 +1,165 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-  .job-card {
-    cursor: pointer;
-  }
+    <style>
+        .jobs-container {
+            margin-top: 60px;
+        }
+        .job-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-  .job-details-wrapper {
-    margin-top: 100px;
-  }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
 
-  .general-description-job {
-    background-color: #F9F8F8;
-  }
+        .job-details-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+        }
 
-  .hidden-details {
-    display: none;
-  }
+        .job-details {
+            background-color: white;
+            margin: 20px auto;
 
-  .card-title {
-    font-size: 1.25rem;
-  }
+            max-width: 1200px;
+            position: relative;
+            padding: 20px;
+            border-radius: 8px;
+        }
 
-  .job-details-wrapper .row {
-    margin-top: 30px;
-  }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
 
-  .job-details-wrapper .card-body {
-    padding: 1.5rem;
-  }
-</style>
+        .card-title {
+            font-size: 1.25rem;
+        }
+    </style>
 
-<!-- Header -->
-<div class="header-text"></div>
+    <!-- Header -->
+    <div class="header-text"></div>
 
-<!-- Card with Job Listings -->
-<div class="container jobs-container py-5">
-  <div class="row g-4" id="productos-container">
-    {% for empleo in empleos %}
-    <div class="col-lg-4 col-md-6">
-      <div class="job-card h-100" data-bs-toggle="collapse" data-bs-target="#job-details-{{ loop.index }}">
-        <div class="card-body d-flex flex-column">
-          <!-- Job Name, Salary, and Vacancies -->
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="card-title fw-bold mb-0">{{ empleo.empleo_datos.nombre_empleo }}</h5>
-            <span class="badge bg-primary">Nuevo</span>
-          </div>
+    <!-- Card with Job Listings -->
+    <div class="container jobs-container py-5">
+        <div class="row g-4" id="productos-container">
+            {% for empleo in empleos %}
+                <div class="col-lg-4 col-md-6 job-item">
+                    <!-- Job Card -->
+                    <div class="card job-card h-100" onclick="toggleJobDetails({{ loop.index }})">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title fw-bold mb-0">{{ empleo.empleo_datos.nombre_empleo }}</h5>
+                                <span class="badge bg-primary">Nuevo</span>
+                            </div>
 
-          <!-- Short description (Salary and Vacancies) -->
-          <p class="card-description mb-4">
-            <strong>Salario:</strong> ${{ empleo.empleo_datos.salario_min }} - ${{ empleo.empleo_datos.salario_max }}<br>
-            <strong>Vacantes:</strong> {{ empleo.empleo_datos.vacantes }}
-          </p>
+                            <p class="card-description mb-4">
+                                <strong>Salario:</strong> ${{ empleo.empleo_datos.salario_min }} - ${{ empleo.empleo_datos.salario_max }}<br>
+                                <strong>Vacantes:</strong> {{ empleo.empleo_datos.vacantes }}
+                            </p>
 
-          <!-- "See More" Button -->
-          <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#job-details-{{ loop.index }}">
-            Ver más
-          </button>
-        </div>
-      </div>
-
-      <!-- Full Job Details (Initially Hidden) -->
-      <div id="job-details-{{ loop.index }}" class="collapse">
-        <div class="job-details-wrapper container py-5">
-          <div class="row">
-            <div class="col-lg-8">
-              <div class="general-description-job card shadow-sm">
-                <div class="card-body">
-                  <h1 class="h2 mb-4">{{ empleo.empleo_datos.nombre_empleo }}</h1>
-
-                  <p><strong>Descripción:</strong> {{ empleo.empleo_datos.descripcion }}</p>
-
-                  <h5 class="text-primary"><i class="fas fa-tasks me-2"></i>Funciones</h5>
-                  <ul class="list-unstyled">
-                    {% for funcion in empleo.empleo_datos.funciones %}
-                      <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>{{ funcion }}</li>
-                    {% endfor %}
-                  </ul>
-
-                  <h5 class="text-primary"><i class="fas fa-list-ul me-2"></i>Requisitos</h5>
-                  <ul class="list-unstyled">
-                    {% for requisito in empleo.empleo_datos.requisitos %}
-                      <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>{{ requisito }}</li>
-                    {% endfor %}
-                  </ul>
-
-                  <h5 class="text-primary"><i class="fas fa-gift me-2"></i>Beneficios</h5>
-                  <ul class="list-unstyled">
-                    {% for beneficio in empleo.empleo_datos.beneficios %}
-                      <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>{{ beneficio }}</li>
-                    {% endfor %}
-                  </ul>
-
+                            <button class="btn btn-outline-primary mt-auto">
+                                Ver más
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4">
-              <div class="general-description-job card shadow-sm mb-4">
-                <div class="card-body">
-                  <h5 class="text-primary mb-4"><i class="fas fa-briefcase me-2"></i>Detalles del puesto</h5>
-                  <div class="mb-3">
-                    <p><i class="fas fa-map-marker-alt text-danger me-2"></i><strong>Ubicación:</strong> {{ empleo.empleo_datos.ubicacion }}</p>
-                    <p><i class="fas fa-money-bill-wave text-success me-2"></i><strong>Salario:</strong> ${{ empleo.empleo_datos.salario_min }} - ${{ empleo.empleo_datos.salario_max }}</p>
-                    <p><i class="fas fa-calendar-alt text-warning me-2"></i><strong>Publicado:</strong> {{ empleo.empleo_datos.fecha_publicacion }}</p>
-                    <p><i class="fas fa-hourglass-end text-warning me-2"></i><strong>Fecha límite:</strong> {{ empleo.empleo_datos.fecha_final }}</p>
-                    <p><i class="fas fa-users text-success me-2"></i><strong>Vacantes:</strong> {{ empleo.empleo_datos.vacantes }}</p>
-                  </div>
-
-                  <a href="/detallesempleo" class="btn btn-primary w-100">
-                    <i class="fas fa-paper-plane me-2"></i>Postular ahora
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+            {% endfor %}
         </div>
-      </div>
     </div>
+
+    <!-- Detalles de empleo, ventana flotante -->
+    {% for empleo in empleos %}
+        <div id="job-details-{{ loop.index }}" class="job-details-container">
+            <div class="job-details">
+                <span class="close-button" onclick="closeJobDetails({{ loop.index }})">&times;</span>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h2 class="mb-4">{{ empleo.empleo_datos.nombre_empleo }}</h2>
+                                        <p><strong>Descripción:</strong> {{ empleo.empleo_datos.descripcion }}</p>
+
+                                        <h5 class="text-primary mt-4"><i class="fas fa-tasks me-2"></i>Funciones</h5>
+                                        <ul class="list-unstyled">
+                                            {% for funcion in empleo.empleo_datos.funciones %}
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>{{ funcion }}</li>
+                                            {% endfor %}
+                                        </ul>
+
+                                        <h5 class="text-primary mt-4"><i class="fas fa-list-ul me-2"></i>Requisitos</h5>
+                                        <ul class="list-unstyled">
+                                            {% for requisito in empleo.empleo_datos.requisitos %}
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>{{ requisito }}</li>
+                                            {% endfor %}
+                                        </ul>
+
+                                        <h5 class="text-primary mt-4"><i class="fas fa-gift me-2"></i>Beneficios</h5>
+                                        <ul class="list-unstyled">
+                                            {% for beneficio in empleo.empleo_datos.beneficios %}
+                                                <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>{{ beneficio }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="text-primary mb-4"><i class="fas fa-briefcase me-2"></i>Detalles del puesto</h5>
+                                                <div class="mb-3">
+                                                    <p><i class="fas fa-map-marker-alt text-danger me-2"></i><strong>Ubicación:</strong> {{ empleo.empleo_datos.ubicacion }}</p>
+                                                    <p><i class="fas fa-money-bill-wave text-success me-2"></i><strong>Salario:</strong> ${{ empleo.empleo_datos.salario_min }} - ${{ empleo.empleo_datos.salario_max }}</p>
+                                                    <p><i class="fas fa-calendar-alt text-warning me-2"></i><strong>Publicado:</strong> {{ empleo.empleo_datos.fecha_publicacion }}</p>
+                                                    <p><i class="fas fa-hourglass-end text-warning me-2"></i><strong>Fecha límite:</strong> {{ empleo.empleo_datos.fecha_final }}</p>
+                                                    <p><i class="fas fa-users text-success me-2"></i><strong>Vacantes:</strong> {{ empleo.empleo_datos.vacantes }}</p>
+                                                </div>
+
+                                                <a href="/detallesempleo" class="btn btn-primary w-100">
+                                                    <i class="fas fa-paper-plane me-2"></i>Postular ahora
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
-  </div>
-</div>
 
-<script>
-  // Optional JavaScript to toggle visibility on click
-  document.querySelectorAll('.job-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const target = card.getAttribute('data-bs-target');
-      const collapseElement = document.querySelector(target);
-      collapseElement.classList.toggle('show');
-    });
-  });
-</script>
+    <script>
+        function toggleJobDetails(index) {
+            const detailsContainer = document.getElementById(`job-details-${index}`);
+            if (detailsContainer) {
+                detailsContainer.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // No scrooll
+            }
+        }
 
+        function closeJobDetails(index) {
+            const detailsContainer = document.getElementById(`job-details-${index}`);
+            if (detailsContainer) {
+                detailsContainer.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Si scrooll
+            }
+        }
+    </script>
 {% endblock %}
