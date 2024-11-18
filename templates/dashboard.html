@@ -83,77 +83,7 @@
       <i class="fas fa-plus"></i> Nuevo Empleo
     </button>
   </main>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </div>
-
-<script>
-  window.onload = function () {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      // Redirigir a la página de inicio de sesión
-      window.location.href = '/login';
-    } else {
-      // Mostrar el contenido protegido
-      document.querySelector('.main-wrapper').style.display = 'block';
-    }
-  };
-
-  const jobs = [
-    {
-      title: "Desarrollador web",
-      candidates: 56,
-      publishDate: "01/04/2024",
-      endDate: "28/04/2024",
-    },
-    {
-      title: "Analista de datos",
-      candidates: 10,
-      publishDate: "21/04/2024",
-      endDate: "10/05/2024",
-    },
-    {
-      title: "Experto en redes",
-      candidates: "+100",
-      publishDate: "10/03/2024",
-      endDate: "03/04/2024",
-    },
-    {
-      title: "Desarrollador android",
-      candidates: 8,
-      publishDate: "02/01/2024",
-      endDate: "10/02/2024",
-    },
-    {
-      title: "Desarrollador IO's",
-      candidates: 3,
-      publishDate: "20/12/2023",
-      endDate: "15/01/2024",
-    },
-  ];
-
-  function renderJobs() {
-    const tbody = document.getElementById("jobsTableBody");
-    tbody.innerHTML = jobs
-      .map(
-        (job) => `
-                <tr>
-                    <td>${job.title}</td>
-                    <td>${job.candidates}</td>
-                    <td>${job.publishDate}</td>
-                    <td>${job.endDate}</td>
-                    <td>
-                        <i class="fas fa-file-alt action-icon" title="Ver detalles"></i>
-                        <i class="fas fa-download action-icon" title="Descargar"></i>
-                        <i class="fas fa-pause action-icon" title="Pausar"></i>
-                        <i class="fas fa-trash action-icon" title="Eliminar"></i>
-                    </td>
-                </tr>
-            `,
-      )
-      .join("");
-  }
-
-  // load on activeTab
-  document.addEventListener("DOMContentLoaded", renderJobs);
-</script>
-
 {% endblock %}

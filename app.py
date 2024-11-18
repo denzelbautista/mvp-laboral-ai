@@ -3,8 +3,15 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from views import views_bp
 import json
 import requests
+from flask_jwt_extended import JWTManager
+
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Establece una clave secreta para la gestión de sesiones
+
+app.secret_key = 'your_secret_key'
+app.config['JWT_TOKEN_LOCATION'] = ['headers']
+
+jwt = JWTManager(app)
+
 app.register_blueprint(views_bp)
 
 # Configuración de Flask-Login
@@ -28,7 +35,7 @@ class Usuario(UserMixin):
 # Modifica la función `load_user` para retornar un objeto `Usuario`
 @login_manager.user_loader
 def load_user(user_id):
-    user_data = usuarios.get(int(user_id))
+    user_data = usuarios.get((user_id))
     if user_data:
         return Usuario(id=user_id, nombre=user_data["nombre"], password=user_data["password"])
     return None

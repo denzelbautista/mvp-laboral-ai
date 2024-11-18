@@ -1,6 +1,7 @@
 # views.py
 from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 from flask_login import UserMixin, current_user, login_required, login_user, logout_user
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import requests
 import json
 # Crea un Blueprint llamado 'views'
@@ -106,6 +107,7 @@ def profile():
 
 
 @views_bp.route("/dashboard")
-@login_required
+@jwt_required()
 def dashboard():
-    return render_template("dashboard.html")
+    current_user = get_jwt_identity()
+    return render_template("dashboard.html", user=current_user)
