@@ -1,89 +1,33 @@
-{% extends "base.html" %}
- {% block content %}
-<style>
-  .main-wrapper {
-    display: none;
-  }
+{% extends "dashboard_base.html" %}
 
-  .table-container {
-    max-width: 1000px;
-    margin-left: 240px;
-    padding: 1rem;
-  }
+{% block page_title %}Últimos Empleos Publicados{% endblock %}
 
-  .action-icon {
-    color: #666;
-    margin: 0 5px;
-    cursor: pointer;
-  }
-
-  .action-icon:hover {
-    color: #333;
-  }
-
-  .new-job-btn {
-    margin-top: 1rem;
-  }
-
-  td,
-  th {
-    line-height: 40px;
-  }
-</style>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/registroproducto.css') }}" />
-<div class="main-wrapper">
-  <!-- sidebar -->
-  <div class="sidebar">
-    <nav class="nav flex-column">
-      <a href="{{url_for('views.dashboard')}}" class="nav-link active">
-        <i class="fas fa-th-large"></i> Dashboard
-      </a>
-      <a href="{{url_for('views.registroproducto')}}" class="nav-link">
-        <i class="fas fa-plus"></i> Publicar empleo
-      </a>
-      <a href="#" class="nav-link">
-        <i class="fas fa-briefcase"></i> Empleos
-      </a>
-      <a href="#" class="nav-link"> <i class="fas fa-comments"></i> Chat </a>
-      <a href="#" class="nav-link"> <i class="fas fa-users"></i> Candidatos </a>
-      <a href="#" class="nav-link">
-        <i class="fas fa-cog"></i> Configuración
-      </a>
-      <a href="#" class="nav-link mt-auto">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </a>
-    </nav>
-  </div>
-
-  <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 table-container">
-    <div class="content-header">
-      <h1>Ultimos empleos publicados</h1>
-    </div>
-
+{% block dashboard_content %}
     <div class="table-responsive rounded">
-      <table class="table table-hover bg-light">
-        <thead>
-          <tr>
-            <th>Título de Puesto</th>
-            <th>Nº de Candidatos</th>
-            <th>Fecha de Publicación</th>
-            <th>Fecha de Finalización</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="jobsTableBody">
-          <!-- fill with js -->
-        </tbody>
-      </table>
+        <table class="table table-hover bg-light">
+            <thead>
+            <tr>
+                <th>Título de Puesto</th>
+                <th>Nº de Vacantes</th>
+                <th>Fecha de Publicación</th>
+                <th>Fecha de Finalización</th>
+
+            </tr>
+            </thead>
+            <tbody id="jobsTableBody">
+                {% for empleo in empleos %}
+                  <tr>
+{#                  TODO : display of the jobs is missing#}
+{#                      <td>{{ empleo['empleo_datos']['nombre_empleo'] }}</td>#}
+{#                      <td>{{ empleo['empleo_datos']['vacantes'] }}</td>#}
+{#                      <td>{{ empleo['empleo_datos']['fecha_publicacion'] }}</td>#}
+{#                      <td>{{ empleo['empleo_datos']['fecha_final'] }}</td>#}
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <button class="btn btn-primary new-job-btn">
-      <i class="fas fa-plus"></i> Nuevo Empleo
+        <i class="fas fa-plus"></i> Nuevo Empleo
     </button>
-  </main>
-</div>
-
-<!-- add examples with js-->
-
-
 {% endblock %}

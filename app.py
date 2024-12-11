@@ -158,7 +158,9 @@ def submit():
         return redirect(url_for('views.empleos_listar'))
     else:
         return jsonify({"status": "error", "message": "Error al enviar los datos", "details": response.text}), response.status_code
-    
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

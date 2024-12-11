@@ -1,25 +1,10 @@
-{% extends "base.html" %}
+{% extends "dashboard_base.html" %}
 
 
 
+{% block page_title %}Crear nuevo empleo{% endblock %}
 
-{% block content %}
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/registroproducto.css') }}">
-    <div class="main-wrapper">
-        <div class="sidebar">
-            <nav class="nav flex-column">
-                <a href="{{ url_for('views.dashboard') }}" class="nav-link">
-                    <i class="fas fa-th-large"></i> Dashboard
-                </a>
-                <a href="{{ url_for('views.registroproducto', empresa_id=empresa_id) }}" class="nav-link active">
-                    <i class="fas fa-plus"></i> Publicar empleo
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-briefcase"></i> Empleos
-                </a>
-            </nav>
-        </div>
+{% block dashboard_content %}
 
         <div class="main-content">
             <h3 class="page-title">Publicar empleo</h3>
@@ -30,38 +15,38 @@
                     <label for="nombre_empleo">Nombre del empleo</label>
                     <input type="text" class="form-control" id="nombre_empleo" name="nombre_empleo" required>
                 </div>
-                <div class="form-group">
-                    <label for="tipo_contrato">Tipo de contrato</label>
-                    <input type="text" class="form-control" id="tipo_contrato" name="tipo_contrato" required>
-                </div>
-                <div class="form-group">
-                    <label for="fecha_publicacion">Fecha de publicación</label>
-                    <input type="date" class="form-control" id="fecha_publicacion" name="fecha_publicacion" required>
-                </div>
+{#                <div class="form-group">#}
+{#                    <label for="tipo_contrato">Tipo de contrato</label>#}
+{#                    <input type="text" class="form-control" id="tipo_contrato" name="tipo_contrato" required>#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label for="fecha_publicacion">Fecha de publicación</label>#}
+{#                    <input type="date" class="form-control" id="fecha_publicacion" name="fecha_publicacion" required>#}
+{#                </div>#}
                 <div class="form-group">
                     <label for="fecha_final">Fecha de cierre</label>
                     <input type="date" class="form-control" id="fecha_final" name="fecha_final" required>
                 </div>
-                <div class="form-group">
-                    <label for="modalidad">Modalidad</label>
-                    <input type="text" class="form-control" id="modalidad" name="modalidad" required>
-                </div>
+{#                <div class="form-group">#}
+{#                    <label for="modalidad">Modalidad</label>#}
+{#                    <input type="text" class="form-control" id="modalidad" name="modalidad" required>#}
+{#                </div>#}
                 <div class="form-group">
                     <label for="ubicacion">Ubicación</label>
                     <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
                 </div>
                 <div class="form-group">
-                    <label for="salario_min">Salario mínimo</label>
+                    <label for="salario_min">Salario</label>
                     <input type="number" class="form-control" id="salario_min" name="salario_min" required>
                 </div>
-                <div class="form-group">
-                    <label for="salario_max">Salario máximo</label>
-                    <input type="number" class="form-control" id="salario_max" name="salario_max" required>
-                </div>
-                <div class="form-group">
-                    <label for="experiencia">Experiencia</label>
-                    <input type="text" class="form-control" id="experiencia" name="experiencia" required>
-                </div>
+{#                <div class="form-group">#}
+{#                    <label for="salario_max">Salario máximo</label>#}
+{#                    <input type="number" class="form-control" id="salario_max" name="salario_max" required>#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label for="experiencia">Experiencia</label>#}
+{#                    <input type="text" class="form-control" id="experiencia" name="experiencia" required>#}
+{#                </div>#}
                 <div class="form-group">
                     <label for="vacantes">Vacantes</label>
                     <input type="number" class="form-control" id="vacantes" name="vacantes" required>
@@ -70,24 +55,23 @@
                     <label for="descripcion">Descripción</label>
                     <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="funciones">Funciones</label>
-                    <textarea class="form-control" id="funciones" name="funciones" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="requisitos">Requisitos</label>
-                    <textarea class="form-control" id="requisitos" name="requisitos" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="beneficios">Beneficios</label>
-                    <textarea class="form-control" id="beneficios" name="beneficios" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="nivel_estudios">Nivel de estudios</label>
-                    <input type="text" class="form-control" id="nivel_estudios" name="nivel_estudios" required>
-                </div>
+{#                <div class="form-group">#}
+{#                    <label for="funciones">Funciones</label>#}
+{#                    <textarea class="form-control" id="funciones" name="funciones" required></textarea>#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label for="requisitos">Requisitos</label>#}
+{#                    <textarea class="form-control" id="requisitos" name="requisitos" required></textarea>#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label for="beneficios">Beneficios</label>#}
+{#                    <textarea class="form-control" id="beneficios" name="beneficios" required></textarea>#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label for="nivel_estudios">Nivel de estudios</label>#}
+{#                    <input type="text" class="form-control" id="nivel_estudios" name="nivel_estudios" required>#}
+{#                </div>#}
                 <button type="submit" class="btn btn-primary btn-block">Publicar Empleo</button>
             </form>
         </div>
-    </div>
 {% endblock %}
